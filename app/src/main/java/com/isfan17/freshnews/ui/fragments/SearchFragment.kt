@@ -17,6 +17,7 @@ import com.isfan17.freshnews.helper.Constants.Companion.NO_RESULTS_MSG
 import com.isfan17.freshnews.helper.Constants.Companion.SEARCH_NEWS_TIME_DELAY
 import com.isfan17.freshnews.helper.Result
 import com.isfan17.freshnews.ui.adapters.ArticleCardAdapter
+import com.isfan17.freshnews.ui.adapters.ArticleListAdapter
 import com.isfan17.freshnews.ui.viewmodels.NewsViewModel
 import com.isfan17.freshnews.ui.viewmodels.ViewModelFactory
 import kotlinx.coroutines.Job
@@ -29,7 +30,7 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var articleCardAdapter: ArticleCardAdapter
+    private lateinit var articleListAdapter: ArticleListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,7 +71,7 @@ class SearchFragment : Fragment() {
                         binding.progressBar.visibility = View.GONE
 
                         val articles = result.data
-                        articleCardAdapter.submitList(articles)
+                        articleListAdapter.submitList(articles)
                     }
                     is Result.Error -> {
                         binding.rvSearchNews.visibility = View.GONE
@@ -124,7 +125,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        articleCardAdapter = ArticleCardAdapter { article ->
+        articleListAdapter = ArticleListAdapter { article ->
             val bundle = Bundle().apply {
                 putParcelable("article", article)
             }
@@ -137,7 +138,7 @@ class SearchFragment : Fragment() {
         binding.rvSearchNews.apply {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
-            adapter = articleCardAdapter
+            adapter = articleListAdapter
         }
     }
 

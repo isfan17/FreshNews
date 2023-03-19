@@ -52,9 +52,7 @@ class ArticleFragment : Fragment() {
 
         val article = args.article
         setupWebView()
-        binding.webView.apply {
-            loadUrl(article.url)
-        }
+        binding.webView.loadUrl(article.url)
 
         viewModel.isNewsBookmarked(article.url).observe(viewLifecycleOwner) {
             if (it)
@@ -89,6 +87,7 @@ class ArticleFragment : Fragment() {
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 if (FragmentHelper.isFragmentVisible(WeakReference(this@ArticleFragment))) {
                     binding.progressBar.visibility = View.VISIBLE
+                    binding.webView.visibility = View.GONE
                 }
                 super.onPageStarted(view, url, favicon)
             }
@@ -101,6 +100,7 @@ class ArticleFragment : Fragment() {
                 super.onPageFinished(view, url)
             }
         }
+
         binding.webView.webViewClient = webViewClient
         binding.webView.settings.javaScriptEnabled = true
         binding.webView.settings.defaultTextEncodingName = "utf-8"
